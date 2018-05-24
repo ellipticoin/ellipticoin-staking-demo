@@ -1,20 +1,51 @@
+import web3 from "./web3";
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './App.css';
+import EllipitcoinStakingContract from './contracts/EllipitcoinStakingContract';
+import { ListGroup as List, ListGroupItem as Item } from 'reactstrap';
+const startingBlock = 2631907;
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {blocks: []};
+  }
+
+  componentDidMount() {
+    var subscription = web3.eth.subscribe('newBlockHeaders')
+      .on("data", async (newBlockHeaders) => {
+        let winner = await EllipitcoinStakingContract.methods.winner().call();
+        // console.log(`${winner} mined block ${newBlockHeaders.number - startingBlock}`);
+        this.setState({
+          blocks: [
+            {
+              number: newBlockHeaders.number - startingBlock,
+              winner,
+            },
+            ...this.state.blocks,
+          ]
+        })
+      });
+    }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="wrapper">
+        <main>
+          <List>
+            <ReactCSSTransitionGroup
+            transitionName="slide-down"
+            transitionEnterTimeout={1000}
+            >
+            {this.state.blocks.map(({winner, number}) =>
+              <Item key={number}>{winner} mined block {number}</Item>
+            )}
+            </ReactCSSTransitionGroup>
+          </List>
+        </main>
       </div>
-    );
+    )
   }
 }
 
