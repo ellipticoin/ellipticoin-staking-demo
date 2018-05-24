@@ -1,19 +1,17 @@
-const _ = require("lodash");
+import EllipitcoinStakingContract from "../src/contracts/EllipitcoinStakingContract";
+import Promise from "bluebird";
+import TestToken from "../src/contracts/TestToken";
+import _ from "lodash";
 import {
   default as web3,
   signAndSend,
   signAndCallFunction,
 } from "../src/web3.js";
 
-const Promise = require("bluebird");
-
-
 const numberOfAccounts = parseInt(process.argv[2]);
 const initialEth = process.argv[3];
 const initialDeposit = process.argv[4];
 const privateKey = process.argv[5];
-const TestToken = require("../src/contracts/TestToken").default;
-const EllipitcoinStakingContract = require("../src/contracts/EllipitcoinStakingContract").default;
 const account = web3.eth.accounts.privateKeyToAccount(privateKey);
 const stakerAccounts = _.times(numberOfAccounts, () => web3.eth.accounts.create());
 
@@ -49,8 +47,13 @@ Promise.mapSeries(stakerAccounts, async (stakerAccount) => {
   console.log(`Deposited ${initialDeposit} test tokens from ${stakerAccount.address}`)
 }).then(() => {
   console.log("Done");
+  console.log("Add the following to `src/stakers.json`:")
+  console.log(`[${_.map(stakerAccounts, (stakerAccount) =>
+    `"${stakerAccount.address}"`
+    ).join(",")}]`
+  )
   console.log("Add the following to your `.env`:")
-  console.log(`PRIVATE_KEYS=${_.map(stakerAccounts,"privateKey")}`)
+  console.log(`PRIVATE_KEYS="${_.map(stakerAccounts,"privateKey")}"`)
   process.exit(0);
 })
 
