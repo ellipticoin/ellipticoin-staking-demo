@@ -1,17 +1,20 @@
 .slide-down-enter {
-  opacity: 0.01;
-  transform-origin: bottom;
-  transform: scaleY(0);
+  box-sizing: border-box;
+  max-height: 0;
+  transition: max-height 2s ease-out;
+  overflow: hidden;
 }
 
 .slide-down-enter.slide-down-enter-active {
-  transform: scaleY(1);
-  opacity: 1;
-  transition-property: opacity, transform;
-  transition-duration: 1s;
-  transition-timing-function: ease-in-out;
+  box-sizing: border-box;
+  max-height: 55px;
+  transition: max-height .5s linear;
 }
 
+.list-group-item {
+  padding: 0 1.25rem;
+  line-height: 50px;
+}
 .wrapper {
   display: flex;
   flex-flow: row wrap;

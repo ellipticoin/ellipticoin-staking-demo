@@ -3,5 +3,5 @@ import {abi} from "./TestToken.json";
 
 export default new web3.eth.Contract(
   abi,
-  "0xb0a9102e84846c43686f297e4e4acacd796a8600"
+  "0x7b345081ba190875b7fa412d7ce0408b4a7aa20f"
 )

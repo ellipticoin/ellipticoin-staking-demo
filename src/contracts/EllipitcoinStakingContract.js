@@ -3,7 +3,7 @@ import {abi} from "./EllipitcoinStakingContract.json";
 
 export default new web3.eth.Contract(
   abi,
-  "0x0e95a153573760d4242e4408838187137795e026"
+  "0xadb59806492d530202dde20661b8bc610043ad39"
 )
 
 export function signatureToHex({r, s, v}) {

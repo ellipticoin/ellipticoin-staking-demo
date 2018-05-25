@@ -1,6 +1,7 @@
 import web3 from "./web3";
 import React, { Component } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import EllipitcoinStakingContract from './contracts/EllipitcoinStakingContract';
 import { ListGroup as List, ListGroupItem as Item } from 'reactstrap';
@@ -13,7 +14,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    var subscription = web3.eth.subscribe('newBlockHeaders')
+    web3.eth.subscribe('newBlockHeaders')
       .on("data", async (newBlockHeaders) => {
         let winner = await EllipitcoinStakingContract.methods.winner().call();
         // console.log(`${winner} mined block ${newBlockHeaders.number - startingBlock}`);
@@ -36,7 +37,8 @@ class App extends Component {
           <List>
             <ReactCSSTransitionGroup
             transitionName="slide-down"
-            transitionEnterTimeout={1000}
+            transitionEnterTimeout={2000}
+            transitionLeaveTimeout={0}
             >
             {this.state.blocks.map(({winner, number}) =>
               <Item key={number}>{winner} mined block {number}</Item>

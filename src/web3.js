@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 
-const web3 = new Web3("ws://sokol.masonforest.com:8546");
+const web3 = new Web3("wss://sokol.masonforest.com:443");
 const GAS_PRICE = web3.utils.toWei("1", "gwei");
 
 export default web3;
